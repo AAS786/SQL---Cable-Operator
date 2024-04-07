@@ -1,1 +1,111 @@
+# List all customers with their account IDs and balances:
+SELECT c.Cust_ID, a.Acc_ID, a.Balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID;
 
+# List all bills with their due dates and the corresponding customer and account IDs:
+SELECT b.Bill_ID, b.Due_Date, c.Cust_ID, a.Acc_ID
+FROM Billing b
+JOIN Accounts a ON b.Acc_ID = a.Acc_ID
+JOIN Customer c ON a.Cust_ID = c.Cust_ID;
+
+# List all payments with their payment dates and the corresponding account IDs:
+SELECT p.Pay_ID, p.Pay_Date, a.Acc_ID
+FROM Payment p
+JOIN Accounts a ON p.Acc_ID = a.Acc_ID;
+
+# List all requests with their request names and the corresponding account IDs and service names:
+SELECT r.Req_ID, r.request_Name, a.Acc_ID, s.service_Name
+FROM Request r
+JOIN Accounts a ON r.Acc_ID = a.Acc_ID
+JOIN Service s ON r.Ser_ID = s.Ser_ID;
+
+# List all customers who have not made any payments:
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+LEFT JOIN (
+  SELECT Acc_ID
+  FROM Payment
+) p ON c.Cust_ID = p.Acc_ID
+WHERE p.Acc_ID IS NULL;
+
+# List all services that have no requests:
+SELECT s.Ser_ID, s.service_Name, s.service_Type
+FROM Service s
+LEFT JOIN (
+  SELECT Ser_ID
+  FROM Request
+) r ON s.Ser_ID = r.Ser_ID
+WHERE r.Ser_ID IS not NULL;
+
+# List all customers who have made payments using a cash:
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+JOIN Payment p ON a.Acc_ID = p.Acc_ID
+WHERE p.Payment_Method = 'cash';
+
+# List all requests that have a recurring charge:
+SELECT r.Req_ID, r.request_Name, r.recurring_Charge, s.service_Name
+FROM Request r
+JOIN Service s ON r.Ser_ID = s.Ser_ID
+WHERE r.recurring_Charge = 'Yes';
+
+# Calculate the total balance of all accounts:
+SELECT SUM(a.Balance)
+FROM Accounts a;
+
+# List all customers who have requested a specific service (e.g. PPV+):
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+JOIN Request r ON a.Acc_ID = r.Acc_ID
+JOIN Service s ON r.Ser_ID = s.Ser_ID
+WHERE s.service_Name = 'PPV+';
+
+# Update the balance of the account with Acc_ID '12107251' to 50:
+UPDATE Accounts
+SET Balance = 50
+WHERE Acc_ID = '12107251';
+
+# Delete the request with Req_ID '19740571':
+DELETE FROM Request
+WHERE Req_ID = '19740571';
+
+# List the total balance of all accounts for each customer:
+SELECT c.Cust_ID, SUM(a.Balance) AS total_balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+GROUP BY c.Cust_ID;
+
+# List the number of requests for each service:
+SELECT s.service_Name, COUNT(*) AS num_requests
+FROM Service s
+JOIN Request r ON s.Ser_ID = r.Ser_ID
+GROUP BY s.service_Name;
+
+# List the payment method and the number of payments made using that method:
+SELECT Payment_Method, COUNT(*) AS num_payments
+FROM Payment
+GROUP BY Payment_Method;
+
+# List all customers who have more than 80 in their account balance, grouped by the number of accounts they have:
+SELECT COUNT(a.Acc_ID) AS num_accounts, c.Cust_ID, SUM(a.Balance) AS total_balance
+FROM Accounts a
+JOIN Customer c ON a.Cust_ID = c.Cust_ID
+GROUP BY c.Cust_ID
+HAVING total_balance > 80;
+
+# List all customers and their account balances, sorted by the balance in descending order:
+SELECT c.Cust_ID, c.first_Name, c.last_Name, a.Balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+ORDER BY a.Balance DESC;
+
+# List all requests and their corresponding services, including requests that have no associated service (using a LEFT JOIN), 
+#sorted by the request date in ascending order:
+
+SELECT r.*, s.service_Name
+FROM Request r
+LEFT JOIN Service s ON r.Ser_ID = s.Ser_ID
+ORDER BY r.dateFrom ASC;
