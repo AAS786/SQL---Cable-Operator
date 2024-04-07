@@ -1,1 +1,266 @@
+Create database Cable_Operator;
+use Cable_Operator;
+
+
+CREATE TABLE Customer(
+    Cust_ID VARCHAR(8) NOT NULL,
+    first_Name VARCHAR(10),
+    last_Name VARCHAR(10),
+    address VARCHAR(255),
+    phone_Num bigint (20),
+    num_Of_Accounts int (5),
+    PRIMARY KEY(Cust_ID));
+
+CREATE TABLE Accounts(
+    Acc_ID VARCHAR(20) NOT NULL,
+    Cust_ID VARCHAR(20) NOT NULL,
+    Balance DECIMAL(8,2),
+    account_Comment VARCHAR(24),
+    PRIMARY KEY (Acc_ID),
+    UNIQUE (Balance),
+    FOREIGN KEY (Cust_ID) REFERENCES Customer(Cust_ID));
+
+CREATE TABLE Billing(
+    Bill_ID VARCHAR(20) NOT NULL,
+    Cust_ID VARCHAR(20) NOT NULL,
+    Acc_ID VARCHAR(20) NOT NULL,
+    Billing_Date DATE,
+    Balance DECIMAL(10,2),
+    unusual_Fee VARCHAR(32),
+    fee_Amount DECIMAL(10,2),
+    unusual_Credit VARCHAR(32),
+    credit_Amount DECIMAL(10,2),
+    Due_Date DATE NOT NULL,
+    PRIMARY KEY (Bill_ID),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts (Acc_ID),
+    FOREIGN KEY (Cust_ID) REFERENCES Customer(Cust_ID));
+
+CREATE TABLE Payment(
+    Pay_ID VARCHAR(10) NOT NULL,
+    Acc_ID VARCHAR(10) NOT NULL,
+    Pay_Date DATE,
+    Payment_Method VARCHAR(20),
+    PRIMARY KEY (Pay_ID),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts(Acc_ID));
+
+CREATE TABLE Service(
+    Ser_ID VARCHAR(10) NOT NULL,
+    service_Name VARCHAR(16),
+    service_Type VARCHAR(16),
+    service_Price DECIMAl(10,2),
+    PRIMARY KEY (Ser_ID, service_Name));
+
+CREATE TABLE Request(
+    Req_ID VARCHAR(20) NOT NULL,
+    Ser_ID VARCHAR(20) NOT NULL,
+    Acc_ID VARCHAR(20) NOT NULL,
+    service_Name VARCHAR(16),
+    service_Type VARCHAR(16),
+    request_Name VARCHAR(16),
+    recurring_Charge VARCHAR(10),
+    dateFrom DATE,
+    dateTo DATE,
+    PRIMARY KEY (Req_ID),
+    FOREIGN KEY (Ser_ID, service_Name) REFERENCES Service(Ser_ID, service_Name),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts(Acc_ID));
+    
+INSERT INTO Customer (Cust_ID ,first_Name,last_Name ,address,phone_Num ,num_Of_Accounts) VALUES 
+('00000007', 'Aarav', 'Shah', 'Dharavi, Mumbai', '9876543210', 1),
+('00000008', 'Sneha', 'Patel', 'Dharavi, Mumbai', '1234567890', 2),
+('00000009', 'Rohan', 'Khan', 'Dharavi, Mumbai', '9871234560', 3),
+('00000010', 'Priya', 'Singh', 'Dharavi, Mumbai', '7894561230', 1),
+('00000011', 'Raj', 'Gupta', 'Dharavi, Mumbai', '6543210987',2),
+('00000012', 'Ayesha', 'Choudhary', 'Dharavi, Mumbai', '4567890123', 1),
+('00000013', 'Karan', 'Sharma', 'Dharavi, Mumbai', '3210987654', 3),
+('00000014', 'Meera', 'Yadav', 'Dharavi, Mumbai', '0123456789', 1),
+('00000015', 'Aniket', 'Joshi', 'Dharavi, Mumbai', '6789012345', 2),
+('00000016', 'Isha', 'Shah', 'Dharavi, Mumbai', '9012345678', 3);
+
+INSERT INTO Accounts( Acc_ID ,Cust_ID ,Balance ,account_Comment ) VALUES 
+('12107251', '00000007',45, 'N/A'),
+('12107252', '00000008', 23,'6 month discount'),
+('12107253', '00000009', 15,'N/A'),
+('12107254', '00000010',106, 'Veteran Discount'),
+('12107255', '00000011',0, 'Elite member'),
+('12107256', '00000012', 55,'Elite member'),
+('12107257', '00000013',78, '6 month discount'),
+('12107258', '00000014',100, 'Elite member'),
+('12107259', '00000015',17, '3 month discount'),
+('12107260', '00000016',22, '3 month discount');
+
+
+
+INSERT INTO Billing (Bill_ID ,Cust_ID ,Acc_ID ,Billing_Date ,Balance ,unusual_Fee ,fee_Amount ,unusual_Credit,credit_Amount ,
+Due_Date) VALUES 
+ ('46532281', '00000007', '12107251', '2022-04-12',162.79, 'Installation Fee', 49.99, 'N/A', 0.00, '2022-05-03'),
+ ('46532282', '00000008', '12107252', '2022-04-01',193.83, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-02'),
+ ('46532283', '00000009', '12107253', '2022-04-14',142.23, 'Activation Fee', 29.99, 'N/A', 0.00, '2022-05-11'),
+ ('46532284', '00000010', '12107251', '2022-01-08',193.99, 'Hardware Rental Fee', 24.99, 'N/A', 0.00, '2022-02-28'),
+ ('46532285', '00000011', '12107255', '2022-04-12',122.99, 'Hardware Rental Fee', 24.99, 'Service Interruption', 24.99, '2022-05-12'),
+ ('46532286', '00000012', '12107256', '2022-04-13',129.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-13'),
+ ('46532287', '00000013', '12107252', '2022-02-03',134.94, 'Hardware Rental Fee', 24.99, 'N/A', 0.00, '2022-03-04'),
+ ('46532288', '00000014', '12107255', '2022-02-09',139.99, 'Activation Fee', 29.99, 'N/A', 0.00, '2022-03-11'),
+ ('46532289', '00000015', '12107251', '2022-02-10',119.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-03-02'),
+ ('46532290', '00000015', '12107251', '2022-02-10',119.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-03-02'),
+ ('46532291', '00000016', '12107254', '2022-04-01',124.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-04');
+
+
+
+INSERT INTO Payment (Pay_ID ,Acc_ID ,Pay_Date,Payment_Method ) VALUES 
+('36452131', '12107251', '2022-04-28', 'Debit'),
+('36452132', '12107252', '2022-05-02', 'Cash'),
+('36452133', '12107253', '2022-05-11', 'Credit'),
+('36452134', '12107254', '2022-05-04', 'Debit'),
+('36452135', '12107255', '2022-05-10', 'Credit'),
+('36452129', '12107251', '2022-03-27', 'Debit'),
+('36452128', '12107251', '2022-02-28', 'Cash'),
+('36452127', '12107251', '2022-01-27', 'Debit'),
+('36452126', '12107251', '2021-12-28', 'Cash'),
+('36452125', '12107251', '2021-11-27', 'Debit'),
+('36452124', '12107251', '2021-10-28', 'Cash');
+
+
+INSERT INTO Service VALUES 
+('10000001', 'PPV', 'Standard', '99.99'),
+('10000002', 'PPV+', 'Special', '129.99'),
+('10000003', 'Video On Demand', 'Standard', '49.99'),
+('10000004', 'Basic Channels', 'Standard', '59.99'),
+('10000005', 'Premium Channels', 'Special', '119.99');
+
+
+INSERT INTO Request (Req_ID ,Ser_ID ,Acc_ID ,service_Name ,service_Type ,request_Name ,recurring_Charge ,dateFrom ,dateTo ) VALUES 
+('19740571', '10000001', '12107251', 'PPV', 'Standard', 'White vs. McGill', 'No', '2022-05-07', '2022-05-07'),
+('19740572', '10000002', '12107252', 'PPV+', 'Special', 'White vs. McGill', 'No', '2022-05-07', '2022-05-07'),
+('19740573', '10000003', '12107253', 'Video On Demand', 'Standard', 'The Batman', 'Yes', '2022-04-07', '2022-05-06'),
+('19740574', '10000004', '12107254', 'Basic Channels', 'Standard', 'N/A', 'Yes', '2022-04-03', '2022-05-02'),
+('19740575', '10000005', '12107255', 'Premium Channels', 'Special', 'N/A', 'Yes', '2022-04-11', '2022-05-10'),
+('19740576', '10000002', '12107256', 'PPV+', 'Special', 'John vs. Pack', 'Yes', '2022-04-01', '2022-04-01'),
+('19740578', '10000002', '12107256', 'PPV+', 'Special', 'UFC 2022', 'Yes', '2022-04-04', '2022-04-04'),
+('19740579', '10000002', '12107256', 'PPV+', 'Special', 'ESPN Football', 'Yes', '2022-04-10', '2022-04-10'),
+('19740580', '10000002', '12107252', 'PPV+', 'Special', 'F1 Tournament', 'No', '2022-04-05', '2022-04-05');
+
+
+select * from Customer;
+select * from Accounts;
+select * from Billing;
+select * from Payment;
+select * from Request;
+
+Desc Customer;
+Desc Accounts;
+Desc Billing;
+Desc Payment;
+Desc Request;
+
+# List all customers with their account IDs and balances:
+SELECT c.Cust_ID, a.Acc_ID, a.Balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID;
+
+# List all bills with their due dates and the corresponding customer and account IDs:
+SELECT b.Bill_ID, b.Due_Date, c.Cust_ID, a.Acc_ID
+FROM Billing b
+JOIN Accounts a ON b.Acc_ID = a.Acc_ID
+JOIN Customer c ON a.Cust_ID = c.Cust_ID;
+
+# List all payments with their payment dates and the corresponding account IDs:
+SELECT p.Pay_ID, p.Pay_Date, a.Acc_ID
+FROM Payment p
+JOIN Accounts a ON p.Acc_ID = a.Acc_ID;
+
+# List all requests with their request names and the corresponding account IDs and service names:
+SELECT r.Req_ID, r.request_Name, a.Acc_ID, s.service_Name
+FROM Request r
+JOIN Accounts a ON r.Acc_ID = a.Acc_ID
+JOIN Service s ON r.Ser_ID = s.Ser_ID;
+
+# List all customers who have not made any payments:
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+LEFT JOIN (
+  SELECT Acc_ID
+  FROM Payment
+) p ON c.Cust_ID = p.Acc_ID
+WHERE p.Acc_ID IS NULL;
+
+# List all services that have no requests:
+SELECT s.Ser_ID, s.service_Name, s.service_Type
+FROM Service s
+LEFT JOIN (
+  SELECT Ser_ID
+  FROM Request
+) r ON s.Ser_ID = r.Ser_ID
+WHERE r.Ser_ID IS not NULL;
+
+# List all customers who have made payments using a cash:
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+JOIN Payment p ON a.Acc_ID = p.Acc_ID
+WHERE p.Payment_Method = 'cash';
+
+# List all requests that have a recurring charge:
+SELECT r.Req_ID, r.request_Name, r.recurring_Charge, s.service_Name
+FROM Request r
+JOIN Service s ON r.Ser_ID = s.Ser_ID
+WHERE r.recurring_Charge = 'Yes';
+
+# Calculate the total balance of all accounts:
+SELECT SUM(a.Balance)
+FROM Accounts a;
+
+# List all customers who have requested a specific service (e.g. PPV+):
+SELECT c.Cust_ID, c.first_Name, c.last_Name
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+JOIN Request r ON a.Acc_ID = r.Acc_ID
+JOIN Service s ON r.Ser_ID = s.Ser_ID
+WHERE s.service_Name = 'PPV+';
+
+# Update the balance of the account with Acc_ID '12107251' to 50:
+UPDATE Accounts
+SET Balance = 50
+WHERE Acc_ID = '12107251';
+
+# Delete the request with Req_ID '19740571':
+DELETE FROM Request
+WHERE Req_ID = '19740571';
+
+# List the total balance of all accounts for each customer:
+SELECT c.Cust_ID, SUM(a.Balance) AS total_balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+GROUP BY c.Cust_ID;
+
+# List the number of requests for each service:
+SELECT s.service_Name, COUNT(*) AS num_requests
+FROM Service s
+JOIN Request r ON s.Ser_ID = r.Ser_ID
+GROUP BY s.service_Name;
+
+# List the payment method and the number of payments made using that method:
+SELECT Payment_Method, COUNT(*) AS num_payments
+FROM Payment
+GROUP BY Payment_Method;
+
+# List all customers who have more than 80 in their account balance, grouped by the number of accounts they have:
+SELECT COUNT(a.Acc_ID) AS num_accounts, c.Cust_ID, SUM(a.Balance) AS total_balance
+FROM Accounts a
+JOIN Customer c ON a.Cust_ID = c.Cust_ID
+GROUP BY c.Cust_ID
+HAVING total_balance > 80;
+
+# List all customers and their account balances, sorted by the balance in descending order:
+SELECT c.Cust_ID, c.first_Name, c.last_Name, a.Balance
+FROM Customer c
+JOIN Accounts a ON c.Cust_ID = a.Cust_ID
+ORDER BY a.Balance DESC;
+
+# List all requests and their corresponding services, including requests that have no associated service (using a LEFT JOIN), 
+#sorted by the request date in ascending order:
+
+SELECT r.*, s.service_Name
+FROM Request r
+LEFT JOIN Service s ON r.Ser_ID = s.Ser_ID
+ORDER BY r.dateFrom ASC;
 
