@@ -1,1 +1,74 @@
+INSERT INTO Customer (Cust_ID ,first_Name,last_Name ,address,phone_Num ,num_Of_Accounts) VALUES 
+('00000007', 'Aarav', 'Shah', 'Dharavi, Mumbai', '9876543210', 1),
+('00000008', 'Sneha', 'Patel', 'Dharavi, Mumbai', '1234567890', 2),
+('00000009', 'Rohan', 'Khan', 'Dharavi, Mumbai', '9871234560', 3),
+('00000010', 'Priya', 'Singh', 'Dharavi, Mumbai', '7894561230', 1),
+('00000011', 'Raj', 'Gupta', 'Dharavi, Mumbai', '6543210987',2),
+('00000012', 'Ayesha', 'Choudhary', 'Dharavi, Mumbai', '4567890123', 1),
+('00000013', 'Karan', 'Sharma', 'Dharavi, Mumbai', '3210987654', 3),
+('00000014', 'Meera', 'Yadav', 'Dharavi, Mumbai', '0123456789', 1),
+('00000015', 'Aniket', 'Joshi', 'Dharavi, Mumbai', '6789012345', 2),
+('00000016', 'Isha', 'Shah', 'Dharavi, Mumbai', '9012345678', 3);
 
+INSERT INTO Accounts( Acc_ID ,Cust_ID ,Balance ,account_Comment ) VALUES 
+('12107251', '00000007',45, 'N/A'),
+('12107252', '00000008', 23,'6 month discount'),
+('12107253', '00000009', 15,'N/A'),
+('12107254', '00000010',106, 'Veteran Discount'),
+('12107255', '00000011',0, 'Elite member'),
+('12107256', '00000012', 55,'Elite member'),
+('12107257', '00000013',78, '6 month discount'),
+('12107258', '00000014',100, 'Elite member'),
+('12107259', '00000015',17, '3 month discount'),
+('12107260', '00000016',22, '3 month discount');
+
+
+
+INSERT INTO Billing (Bill_ID ,Cust_ID ,Acc_ID ,Billing_Date ,Balance ,unusual_Fee ,fee_Amount ,unusual_Credit,credit_Amount ,
+Due_Date) VALUES 
+ ('46532281', '00000007', '12107251', '2022-04-12',162.79, 'Installation Fee', 49.99, 'N/A', 0.00, '2022-05-03'),
+ ('46532282', '00000008', '12107252', '2022-04-01',193.83, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-02'),
+ ('46532283', '00000009', '12107253', '2022-04-14',142.23, 'Activation Fee', 29.99, 'N/A', 0.00, '2022-05-11'),
+ ('46532284', '00000010', '12107251', '2022-01-08',193.99, 'Hardware Rental Fee', 24.99, 'N/A', 0.00, '2022-02-28'),
+ ('46532285', '00000011', '12107255', '2022-04-12',122.99, 'Hardware Rental Fee', 24.99, 'Service Interruption', 24.99, '2022-05-12'),
+ ('46532286', '00000012', '12107256', '2022-04-13',129.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-13'),
+ ('46532287', '00000013', '12107252', '2022-02-03',134.94, 'Hardware Rental Fee', 24.99, 'N/A', 0.00, '2022-03-04'),
+ ('46532288', '00000014', '12107255', '2022-02-09',139.99, 'Activation Fee', 29.99, 'N/A', 0.00, '2022-03-11'),
+ ('46532289', '00000015', '12107251', '2022-02-10',119.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-03-02'),
+ ('46532290', '00000015', '12107251', '2022-02-10',119.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-03-02'),
+ ('46532291', '00000016', '12107254', '2022-04-01',124.99, 'N/A', 0.00, 'Service Interruption', 24.99, '2022-05-04');
+
+
+
+INSERT INTO Payment (Pay_ID ,Acc_ID ,Pay_Date,Payment_Method ) VALUES 
+('36452131', '12107251', '2022-04-28', 'Debit'),
+('36452132', '12107252', '2022-05-02', 'Cash'),
+('36452133', '12107253', '2022-05-11', 'Credit'),
+('36452134', '12107254', '2022-05-04', 'Debit'),
+('36452135', '12107255', '2022-05-10', 'Credit'),
+('36452129', '12107251', '2022-03-27', 'Debit'),
+('36452128', '12107251', '2022-02-28', 'Cash'),
+('36452127', '12107251', '2022-01-27', 'Debit'),
+('36452126', '12107251', '2021-12-28', 'Cash'),
+('36452125', '12107251', '2021-11-27', 'Debit'),
+('36452124', '12107251', '2021-10-28', 'Cash');
+
+
+INSERT INTO Service VALUES 
+('10000001', 'PPV', 'Standard', '99.99'),
+('10000002', 'PPV+', 'Special', '129.99'),
+('10000003', 'Video On Demand', 'Standard', '49.99'),
+('10000004', 'Basic Channels', 'Standard', '59.99'),
+('10000005', 'Premium Channels', 'Special', '119.99');
+
+
+INSERT INTO Request (Req_ID ,Ser_ID ,Acc_ID ,service_Name ,service_Type ,request_Name ,recurring_Charge ,dateFrom ,dateTo ) VALUES 
+('19740571', '10000001', '12107251', 'PPV', 'Standard', 'White vs. McGill', 'No', '2022-05-07', '2022-05-07'),
+('19740572', '10000002', '12107252', 'PPV+', 'Special', 'White vs. McGill', 'No', '2022-05-07', '2022-05-07'),
+('19740573', '10000003', '12107253', 'Video On Demand', 'Standard', 'The Batman', 'Yes', '2022-04-07', '2022-05-06'),
+('19740574', '10000004', '12107254', 'Basic Channels', 'Standard', 'N/A', 'Yes', '2022-04-03', '2022-05-02'),
+('19740575', '10000005', '12107255', 'Premium Channels', 'Special', 'N/A', 'Yes', '2022-04-11', '2022-05-10'),
+('19740576', '10000002', '12107256', 'PPV+', 'Special', 'John vs. Pack', 'Yes', '2022-04-01', '2022-04-01'),
+('19740578', '10000002', '12107256', 'PPV+', 'Special', 'UFC 2022', 'Yes', '2022-04-04', '2022-04-04'),
+('19740579', '10000002', '12107256', 'PPV+', 'Special', 'ESPN Football', 'Yes', '2022-04-10', '2022-04-10'),
+('19740580', '10000002', '12107252', 'PPV+', 'Special', 'F1 Tournament', 'No', '2022-04-05', '2022-04-05');
