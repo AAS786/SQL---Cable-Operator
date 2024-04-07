@@ -1,1 +1,65 @@
+create database Cable_Operator;
+use Cable_Operator;
 
+
+CREATE TABLE Customer(
+    Cust_ID VARCHAR(8) NOT NULL,
+    first_Name VARCHAR(10),
+    last_Name VARCHAR(10),
+    address VARCHAR(255),
+    phone_Num bigint (20),
+    num_Of_Accounts int (5),
+    PRIMARY KEY(Cust_ID));
+
+CREATE TABLE Accounts(
+    Acc_ID VARCHAR(20) NOT NULL,
+    Cust_ID VARCHAR(20) NOT NULL,
+    Balance DECIMAL(8,2),
+    account_Comment VARCHAR(24),
+    PRIMARY KEY (Acc_ID),
+    UNIQUE (Balance),
+    FOREIGN KEY (Cust_ID) REFERENCES Customer(Cust_ID));
+
+CREATE TABLE Billing(
+    Bill_ID VARCHAR(20) NOT NULL,
+    Cust_ID VARCHAR(20) NOT NULL,
+    Acc_ID VARCHAR(20) NOT NULL,
+    Billing_Date DATE,
+    Balance DECIMAL(10,2),
+    unusual_Fee VARCHAR(32),
+    fee_Amount DECIMAL(10,2),
+    unusual_Credit VARCHAR(32),
+    credit_Amount DECIMAL(10,2),
+    Due_Date DATE NOT NULL,
+    PRIMARY KEY (Bill_ID),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts (Acc_ID),
+    FOREIGN KEY (Cust_ID) REFERENCES Customer(Cust_ID));
+
+CREATE TABLE Payment(
+    Pay_ID VARCHAR(10) NOT NULL,
+    Acc_ID VARCHAR(10) NOT NULL,
+    Pay_Date DATE,
+    Payment_Method VARCHAR(20),
+    PRIMARY KEY (Pay_ID),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts(Acc_ID));
+
+CREATE TABLE Service(
+    Ser_ID VARCHAR(10) NOT NULL,
+    service_Name VARCHAR(16),
+    service_Type VARCHAR(16),
+    service_Price DECIMAl(10,2),
+    PRIMARY KEY (Ser_ID, service_Name));
+
+CREATE TABLE Request(
+    Req_ID VARCHAR(20) NOT NULL,
+    Ser_ID VARCHAR(20) NOT NULL,
+    Acc_ID VARCHAR(20) NOT NULL,
+    service_Name VARCHAR(16),
+    service_Type VARCHAR(16),
+    request_Name VARCHAR(16),
+    recurring_Charge VARCHAR(10),
+    dateFrom DATE,
+    dateTo DATE,
+    PRIMARY KEY (Req_ID),
+    FOREIGN KEY (Ser_ID, service_Name) REFERENCES Service(Ser_ID, service_Name),
+    FOREIGN KEY (Acc_ID) REFERENCES Accounts(Acc_ID));
