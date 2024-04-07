@@ -1,1 +1,11 @@
+select * from Customer;
+select * from Accounts;
+select * from Billing;
+select * from Payment;
+select * from Request;
 
+Desc Customer;
+Desc Accounts;
+Desc Billing;
+Desc Payment;
+Desc Request;
